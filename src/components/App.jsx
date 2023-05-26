@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Searchbar } from './Searchbar/Searchbar';
 import toast, { Toaster } from 'react-hot-toast';
@@ -14,20 +14,30 @@ export const App = () => {
   const [hits, setHits] = useState([]);
   const [totalHits, setTotalHits] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [showButton, setShowButton] = useState(false);
 
-  const onSearch = newQuery => {
-    if (query === newQuery) {
-      toast(
-        `Information about the query "${newQuery}" has already been submitted!`,
-        { icon: '🙃' }
-      );
+  const onSearch = useCallback(
+    newQuery => {
+      if (query === newQuery) {
+        toast(
+          `Information about the query "${newQuery}" has already been submitted!`,
+          { icon: '🙃' }
+        );
 
-      return null;
-    }
+        return null;
+      }
 
-    setQuery(newQuery);
-    setPage(1);
-  };
+      setQuery(newQuery);
+      setPage(1);
+    },
+    [query]
+  );
+
+  const onLoadMore = useCallback(() => {
+    setPage(state => state + 1);
+    const newShowButton = totalHits !== hits.length && !isLoading;
+    setShowButton(newShowButton);
+  }, [hits.length, isLoading, totalHits]);
 
   useEffect(() => {
     if (!query) {
@@ -77,12 +87,6 @@ export const App = () => {
 
     fetchImages();
   }, [page, query]);
-
-  const onLoadMore = () => {
-    setPage(state => state + 1);
-  };
-
-  const showButton = totalHits !== hits.length && !isLoading;
 
   return (
     <AppContainer>
