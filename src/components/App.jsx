@@ -35,9 +35,7 @@ export const App = () => {
 
   const onLoadMore = useCallback(() => {
     setPage(state => state + 1);
-    const newShowButton = totalHits !== hits.length && !isLoading;
-    setShowButton(newShowButton);
-  }, [hits.length, isLoading, totalHits]);
+  }, []);
 
   useEffect(() => {
     if (!query) {
