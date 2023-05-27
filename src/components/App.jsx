@@ -87,7 +87,7 @@ export const App = () => {
     }
 
     const isLastPage = hits.length >= totalHits;
-    console.log('isLastPage', isLastPage);
+
     if (isLastPage) {
       toast(`You have reached the last page!`, {
         icon: '😅',
