@@ -10,11 +10,11 @@ import { Button } from 'components/Button/Button';
 
 export const App = () => {
   const [query, setQuery] = useState('');
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const [hits, setHits] = useState([]);
   const [totalHits, setTotalHits] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  // const [showButton, setShowButton] = useState(false);
+  const [showButton, setShowButton] = useState(false);
 
   const onSearch = newQuery => {
     if (query === newQuery) {
@@ -43,10 +43,10 @@ export const App = () => {
       try {
         setIsLoading(true);
         const response = await API.imageSearch(query, page);
-        const { hits, total, totalHits } = response;
+        const { hits: responseHits, total, totalHits } = response;
 
         if (page === 1) {
-          setHits(hits);
+          setHits(responseHits);
           setTotalHits(totalHits);
           if (total) {
             toast.success(
@@ -60,9 +60,7 @@ export const App = () => {
             });
           }
         } else {
-          setHits(state => {
-            return [...state, ...hits];
-          });
+          setHits(state => [...state, ...responseHits]);
 
           setTimeout(() => {
             window.scrollBy({
@@ -70,8 +68,6 @@ export const App = () => {
               behavior: 'smooth',
             });
           }, 200);
-
-          console.log('запись стейта хитс через лоад море');
         }
       } catch (error) {
         console.log(error.message);
@@ -83,8 +79,23 @@ export const App = () => {
     fetchImages();
   }, [page, query]);
 
-  const showButton = totalHits !== hits.length && !isLoading;
-  console.log('запись шоуБаттон');
+  useEffect(() => {
+    if (!totalHits) {
+      return;
+    }
+
+    setShowButton(totalHits !== hits.length && !isLoading);
+
+    const isLastPage = hits.length >= totalHits;
+    if (isLastPage) {
+      toast(`You have reached the last page!`, {
+        icon: '😅',
+        style: { backgroundColor: '#3f51b5', color: '#fff' },
+        position: 'bottom-center',
+      });
+    }
+  }, [hits, isLoading, totalHits]);
+
   return (
     <AppContainer>
       <GlobalStyle />
