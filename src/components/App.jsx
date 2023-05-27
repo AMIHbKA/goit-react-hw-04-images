@@ -99,7 +99,7 @@ export const App = () => {
 
   useEffect(() => {
     setShowButton(totalHits !== hits.length && !isLoading);
-  }, [hits.length, isLoading, totalHits]);
+  }, [hits, isLoading, totalHits]);
 
   return (
     <AppContainer>
