@@ -14,28 +14,25 @@ export const App = () => {
   const [hits, setHits] = useState([]);
   const [totalHits, setTotalHits] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [showButton, setShowButton] = useState(false);
+  // const [showButton, setShowButton] = useState(false);
 
-  const onSearch = useCallback(
-    newQuery => {
-      if (query === newQuery) {
-        toast(
-          `Information about the query "${newQuery}" has already been submitted!`,
-          { icon: '🙃' }
-        );
+  const onSearch = newQuery => {
+    if (query === newQuery) {
+      toast(
+        `Information about the query "${newQuery}" has already been submitted!`,
+        { icon: '🙃' }
+      );
 
-        return null;
-      }
+      return null;
+    }
 
-      setQuery(newQuery);
-      setPage(1);
-    },
-    [query]
-  );
+    setQuery(newQuery);
+    setPage(1);
+  };
 
-  const onLoadMore = useCallback(() => {
+  const onLoadMore = () => {
     setPage(state => state + 1);
-  }, []);
+  };
 
   useEffect(() => {
     if (!query) {
@@ -65,14 +62,14 @@ export const App = () => {
         } else {
           setHits(state => {
             const result = [...state, ...hits];
-            const isLastPage = result.length >= totalHits;
-            if (isLastPage) {
-              toast(`You have reached the last page!`, {
-                icon: '😅',
-                style: { backgroundColor: '#3f51b5', color: '#fff' },
-                position: 'bottom-center',
-              });
-            }
+            // const isLastPage = result.length >= totalHits;
+            // if (isLastPage) {
+            //   toast(`You have reached the last page!`, {
+            //     icon: '😅',
+            //     style: { backgroundColor: '#3f51b5', color: '#fff' },
+            //     position: 'bottom-center',
+            //   });
+            // }
             return result;
           });
         }
@@ -85,6 +82,8 @@ export const App = () => {
 
     fetchImages();
   }, [page, query]);
+
+  const showButton = totalHits !== hits.length && !isLoading;
 
   return (
     <AppContainer>
