@@ -86,9 +86,8 @@ export const App = () => {
       return;
     }
 
-    setShowButton(totalHits !== hits.length && !isLoading);
-
     const isLastPage = hits.length >= totalHits;
+    console.log('isLastPage', isLastPage);
     if (isLastPage) {
       toast(`You have reached the last page!`, {
         icon: '😅',
@@ -96,7 +95,11 @@ export const App = () => {
         position: 'bottom-center',
       });
     }
-  }, [hits, isLoading, totalHits]);
+  }, [hits, totalHits]);
+
+  useEffect(() => {
+    setShowButton(totalHits !== hits.length && !isLoading);
+  }, [hits.length, isLoading, totalHits]);
 
   return (
     <AppContainer>
