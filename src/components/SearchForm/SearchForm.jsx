@@ -9,7 +9,6 @@ export const SearchForm = ({ onSearch }) => {
       initialValues={{ query: '' }}
       onSubmit={(values, { resetForm }) => {
         onSearch(values.query);
-        console.log('values', values);
         // resetForm();
       }}
     >
