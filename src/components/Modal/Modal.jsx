@@ -5,14 +5,6 @@ import PropTypes from 'prop-types';
 export const Modal = ({ onActive, children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const onEscKey = event => {
-    if (event.code !== 'Escape') {
-      return;
-    }
-
-    onActive();
-  };
-
   const handleClick = event => {
     const { target, currentTarget } = event;
     if (target === currentTarget) {
@@ -21,6 +13,14 @@ export const Modal = ({ onActive, children }) => {
   };
 
   useEffect(() => {
+    const onEscKey = event => {
+      if (event.code !== 'Escape') {
+        return;
+      }
+
+      onActive();
+    };
+
     document.addEventListener('keydown', onEscKey);
     document.documentElement.style.overflowY = 'hidden';
     setTimeout(() => {
@@ -31,7 +31,7 @@ export const Modal = ({ onActive, children }) => {
       document.removeEventListener('keydown', onEscKey);
       document.documentElement.style.overflowY = 'auto';
     };
-  }, []);
+  }, [onActive]);
 
   const modalClassName = isOpen ? 'modal-open' : '';
 
