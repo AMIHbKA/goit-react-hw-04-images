@@ -70,7 +70,9 @@ export const App = () => {
           }, 200);
         }
       } catch (error) {
-        console.log(error.message);
+        toast.error(error.message, {
+          style: { backgroundColor: 'red', color: '#fff' },
+        });
       } finally {
         setIsLoading(false);
       }

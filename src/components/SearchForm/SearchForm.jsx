@@ -1,6 +1,7 @@
 import { Formik } from 'formik';
 import { SearchButtonIcon } from 'UI/icons';
 import { ButtonSearch, Field, Form } from './SearchForm.styled';
+import PropTypes from 'prop-types';
 
 export const SearchForm = ({ onSearch }) => {
   return (
@@ -29,4 +30,8 @@ export const SearchForm = ({ onSearch }) => {
       </Form>
     </Formik>
   );
+};
+
+SearchForm.propTypes = {
+  onSearch: PropTypes.func.isRequired,
 };
