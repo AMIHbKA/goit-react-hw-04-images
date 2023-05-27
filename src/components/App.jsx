@@ -61,17 +61,17 @@ export const App = () => {
           }
         } else {
           setHits(state => {
-            const result = [...state, ...hits];
-            // const isLastPage = result.length >= totalHits;
-            // if (isLastPage) {
-            //   toast(`You have reached the last page!`, {
-            //     icon: '😅',
-            //     style: { backgroundColor: '#3f51b5', color: '#fff' },
-            //     position: 'bottom-center',
-            //   });
-            // }
-            return result;
+            return [...state, ...hits];
           });
+
+          setTimeout(() => {
+            window.scrollBy({
+              top: window.innerHeight,
+              behavior: 'smooth',
+            });
+          }, 200);
+
+          console.log('запись стейта хитс через лоад море');
         }
       } catch (error) {
         console.log(error.message);
@@ -84,7 +84,7 @@ export const App = () => {
   }, [page, query]);
 
   const showButton = totalHits !== hits.length && !isLoading;
-
+  console.log('запись шоуБаттон');
   return (
     <AppContainer>
       <GlobalStyle />
